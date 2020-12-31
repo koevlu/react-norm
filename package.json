@@ -1,0 +1,29 @@
+{
+  "name": "react-norm",
+  "version": "0.0.0-superbeta",
+  "description": "normalized state in hooks",
+  "main": "react-norm.min.js",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "keywords": [
+    "react",
+    "norm",
+    "hooks",
+    "store",
+    "orm",
+    "db",
+    "database"
+  ],
+  "author": "Kostya Luchankin",
+  "license": "MIT",
+  "dependencies": {
+    "react": "0.0.0-experimental-4c8c98ab9"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "rollup": "^2.35.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-terser": "^7.0.2"
+  }
+}
