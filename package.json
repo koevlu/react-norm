@@ -1,6 +1,6 @@
 {
   "name": "react-norm",
-  "version": "0.0.0-superbeta",
+  "version": "0.0.0-superbeta-0",
   "description": "normalized state in hooks",
   "main": "react-norm.min.js",
   "scripts": {
