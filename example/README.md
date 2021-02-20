@@ -1,3 +1,5 @@
-# react-norm-books-example
+# example BOOKS
 
-run with `npm i && npm start`
+runs with `npm i && npm start`
+
+

@@ -1,4 +1,4 @@
-import { store, useStore } from 'react-norm'
+import { store, useStore } from '../r-nrm'
 import api from '../api'
 import { authorOrm } from '../stores/orm'
 

@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { useRoutes } from 'react-router'
+import { preload } from './r-nrm'
 
 import SplashScreen from './ui/SplashScreen'
 import Page from './ui/Page'
@@ -15,7 +16,7 @@ import preloadFavoriteBooks from './stores/favoriteBooks'
 import preloadAuthor from './stores/author'
 import preloadBook from './stores/book'
 
-const AppRouter = () => useRoutes([
+const routes = preload([
   {
     path: '/',
     element: <Page>
@@ -29,7 +30,7 @@ const AppRouter = () => useRoutes([
     }
   },
   {
-    path: `author/:authorId`,
+    path: 'author/:authorId',
     element: <Page>
       <Author />
     </Page>,
@@ -42,14 +43,14 @@ const AppRouter = () => useRoutes([
     </Page>,
     preload: preloadBook,
   }
-]);
+])
 
-const App = () =>
+const AppRouter = () => useRoutes(routes);
+
+export default () =>
   <BrowserRouter timeoutMs={8000}>
     <Suspense fallback={<SplashScreen />}>
       <ProgressBar />
       <AppRouter />
     </Suspense>
   </BrowserRouter>
-
-export default App

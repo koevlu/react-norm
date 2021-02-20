@@ -1,6 +1,6 @@
 import React, { useRef, useLayoutEffect } from 'react'
 import { useLocationPending } from 'react-router'
-import { useLoading } from 'react-norm'
+import { useLoading } from '../r-nrm'
 import { usePrev } from '../utils'
 
 let intervalId

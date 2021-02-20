@@ -1,14 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { PreloadLink } from '../r-nrm'
 
 const Page = ({ children }) =>
   <>
-    <Link to='/'>index</Link>
+    <PreloadLink to='/'>index</PreloadLink>
     <div style={{ margin: '0 auto' }}>
       {children}
     </div>
     <br />
-    <Link to='/'>index</Link>
+    <PreloadLink to='/'>index</PreloadLink>
   </>
 
 export default Page

@@ -1,6 +1,6 @@
-import { orm } from 'react-norm'
+import { orm } from '../r-nrm'
 
-// pass function for await const authorOrm execution
+// pass func for await const authorOrm execution
 export const bookOrm = orm(() => ({
   author: authorOrm
 }))

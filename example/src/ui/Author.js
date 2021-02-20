@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { PreloadLink } from '../r-nrm'
 import { useAuthor } from '../stores/author'
 import { randomColor } from '../utils'
 import Flag from './Flag'
@@ -36,7 +37,7 @@ const Author = () => {
         </h3>
         {author.booksPreview.map((book, i) => (
           <Fragment key={book.id}>
-            <Link
+            <PreloadLink
               to={`/book/${book.id}`}
               style={{
                 display: 'block',
@@ -52,7 +53,7 @@ const Author = () => {
               onMouseOut={() => updateColor(i)}
             >
               {book.name}
-            </Link>
+            </PreloadLink>
             <br/>
           </Fragment>
         ))}

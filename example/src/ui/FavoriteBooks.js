@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { PreloadLink } from '../r-nrm'
 import { useFavoriteBooks } from '../stores/favoriteBooks'
 import { randomColor } from '../utils'
 
@@ -15,7 +15,7 @@ const FavoriteBooks = () => {
     <>
       <h1>favorite books:</h1>
       {favoriteBooks.map((book, i) => (
-        <Link
+        <PreloadLink
           style={{
             textDecoration: 'none',
             color: colors[i]
@@ -28,7 +28,7 @@ const FavoriteBooks = () => {
         >
           <h2>{book.name}</h2>
           {book.description}
-        </Link>
+        </PreloadLink>
       ))}
     </>
   )

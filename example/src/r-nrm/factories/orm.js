@@ -33,9 +33,11 @@ export const ormFactory = desc => {
     },
     num: num++
   }
+
   g.descriptions.set(orm, desc)
   g.ormKeys.set(orm, nextOrmKeys)
   nextOrmKeys = ['id']
+
   return orm
 }
 

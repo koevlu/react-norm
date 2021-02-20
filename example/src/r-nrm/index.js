@@ -3,5 +3,4 @@ export { storeFactory as store } from './factories/store'
 // ? export { ormStoreFactory as ormStore } from './factories/ormStore'
 export { useStore, useLoading } from './hooks'
 
-// todo: import('...') is promise and store.put calls after first component render
-// export { preloadStore } from './preloadStore'
+export { PreloadLink, preload } from './PreloadLink'
