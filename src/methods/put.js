@@ -1,4 +1,7 @@
+import getItem from './get'
+import { updateRemovedChildsRelations } from './remove'
 import g from '../globals'
+import { executeSubscriptions } from '../subscriptions'
 import {
   normalizeId,
   getIdKeyAndId,
@@ -10,9 +13,6 @@ import {
   resolveDiff,
   isPlainObject
 } from '../utils'
-import { executeSubscriptions } from '../subscriptions'
-import { updateRemovedChildsRelations } from './remove'
-import getItem from './get'
 
 const stack = []
 let loops = new Map()
@@ -38,9 +38,12 @@ const mergeItem = (orm, normId, diff, parentId) => {
   if (updatedIds.get(normId)) {
     const itemLoops = loops.get(normId)
     const loop = [...stack, normId]
+
     if (!itemLoops) loops.set(normId, [loop])
     else itemLoops.push(loop)
+
     relationsIncrement(normId, parentId)
+
     return g.items.get(normId)
   }
 
@@ -56,14 +59,16 @@ const mergeItem = (orm, normId, diff, parentId) => {
     }
     return diff
   }
-
   stack.push(normId)
+
   g.refreshes.delete(normId)
   relationsIncrement(normId, parentId)
 
   const nextItem = Array.isArray(diff) ? [] : isPlainObject(diff) ? {} : diff
   g.items.set(normId, nextItem)
+
   merge(g.descriptions.get(orm), item, diff, normId, nextItem)
+
   stack.pop()
   return nextItem
 }
@@ -78,10 +83,12 @@ const merge = (desc, level, diff, parentId, inst) => {
 
     return mergeItem(desc, normId, diff, parentId)
   }
+
   if (isPlainObject(diff) && isPlainObject(inst)) {
     for (let key in diff) {
       const keyDesc = desc && desc[key]
       const keyValue = level && level[key]
+
       stack.push(key)
       inst[key] = merge(keyDesc, keyValue, diff[key], parentId, inst)
       stack.pop()
@@ -91,12 +98,15 @@ const merge = (desc, level, diff, parentId, inst) => {
         if (!diff.hasOwnProperty(key)) {
           const keyDesc = desc && desc[key]
           const keyValue = level && level[key]
+
           stack.push(key)
           inst[key] = merge(keyDesc, keyValue, keyValue, parentId)
           stack.pop()
         }
+
     return inst
   }
+
   if (Array.isArray(diff) && Array.isArray(desc)) {
     // oneOf !array
     const result = Array.isArray(inst) ? inst : []
@@ -112,7 +122,9 @@ const merge = (desc, level, diff, parentId, inst) => {
       stack.pop()
     })
     updateRemovedChildsRelations(level, result, nextChilds, parentId)
+
     return result
   }
+
   return diff
 }

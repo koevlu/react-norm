@@ -1,4 +1,6 @@
+import getItem from './get'
 import g from '../globals'
+import { executeSubscriptions } from '../subscriptions'
 import {
   normalizeId,
   getIdKeyAndId,
@@ -7,8 +9,6 @@ import {
   isOrm,
   isPlainObject
 } from '../utils'
-import { executeSubscriptions } from '../subscriptions'
-import getItem from './get'
 
 let wasRemovedItem = false
 let updatedIds = new Map()
@@ -64,6 +64,7 @@ export const removeItem = normId => {
   g.refreshes.delete(normId)
   deferRefreshes(updatedIds)
   executeSubscriptions(updatedIds)
+
   return item
 }
 
@@ -82,6 +83,7 @@ const mergeRemoving = (desc, level, normId, parentNormId) => {
     const mergedLevel = {}
     for (let key in level)
       mergedLevel[key] = mergeRemoving(desc[key], level[key], normId)
+
     return wasRemovedItem ? mergedLevel : level
   }
   if (Array.isArray(desc) && Array.isArray(level)) {

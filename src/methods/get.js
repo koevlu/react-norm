@@ -28,12 +28,14 @@ const refreshLevel = (desc, level, nextLevel) => {
     const { idKey, id } = getIdKeyAndId(desc, level)
     const normId = normalizeId(desc, idKey, id)
     const item = getItem(normId)
+
     return item
   }
   if (isPlainObject(desc)) {
     if (!isPlainObject(level)) return level
     for (let key in level)
       nextLevel[key] = refreshLevel(desc[key], level[key])
+
     return nextLevel
   }
   if (Array.isArray(desc)) {
@@ -41,6 +43,7 @@ const refreshLevel = (desc, level, nextLevel) => {
     nextLevel = nextLevel || []
     for (let i = 0; i < level.length; i++)
       nextLevel[i] = refreshLevel(desc[0], level[i])
+
     return nextLevel
   }
   return level

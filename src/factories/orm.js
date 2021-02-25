@@ -5,7 +5,7 @@ import removeItem from '../methods/remove'
 import replaceItem from '../methods/replace'
 import { normalizeId } from '../utils'
 
-// orm.oneOf, orm.bound
+// orm.oneOf
 
 let nextOrmKeys = ['id']
 let num = 0
@@ -33,9 +33,11 @@ export const ormFactory = desc => {
     },
     num: num++
   }
+
   g.descriptions.set(orm, desc)
   g.ormKeys.set(orm, nextOrmKeys)
   nextOrmKeys = ['id']
+
   return orm
 }
 

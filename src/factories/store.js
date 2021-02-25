@@ -56,7 +56,7 @@ export const storeFactory = (desc, initState, userOptions) => {
 
 const putStorePromise = (store, normId, promise, options) => {
   const gPromises =
-    options.suspense && !(g.fetchedAt.has(normId) || g.suspensePromises.has(normId))
+    options.suspense && !(g.fetchedAt.has(normId) || g.suspensePromises.has(normId)) && !g.preloading
       ? g.suspensePromises
       : g.refetchingPromises
 
@@ -102,13 +102,15 @@ const putStoreItem = (store, normId, diff) => {
 
 const parsePutArgs = (store, storeOptions, args) => {
   const id = store.isOrmStore ? args[0] : store.id
-  const diff = store.isOrmStore ? args[1] : args[0]
   const userOptions = store.isOrmStore ? args[2] : args[1]
   const storeOrm = g.ormsById.get(store.id)
+
+  const diff = store.isOrmStore ? args[1] : args[0]
   const options = { ...storeOptions, ...userOptions }
   const normId = store.isOrmStore
     ? normalizeId(storeOrm, options.idKey, id)
     : store.id
+
   return {
     normId,
     options,
@@ -121,6 +123,7 @@ const parseGetArgs = (store, storeOptions, args) => {
   const userOptions = store.isOrmStore ? args[2] : args[1]
   const storeOrm = g.ormsById.get(store.id)
   const options = { ...storeOptions, ...userOptions }
+
   return {
     normId: store.isOrmStore
       ? normalizeId(storeOrm, options.idKey, id)
