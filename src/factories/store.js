@@ -3,14 +3,13 @@ import { putItem } from '../methods/put'
 import { getItem } from '../methods/get'
 import {
   normalizeId,
-  isOrm,
   isPromise,
   MONTH
 } from '../utils'
 import { ormFactory } from './orm'
 import { executeSubscription } from '../subscriptions'
 
-export const LOADER_NORM_ID = Symbol('loader')
+export const LOADER_NORM_ID = 'loader'
 
 const DEFAULT_STORE_OPTIONS = {
   idKey: 'id',
@@ -73,7 +72,7 @@ const putStorePromise = (store, normId, promise, options) => {
   return result
 }
 
-const actualizeLoading = () => {
+export const actualizeLoading = () => {
   const loader = g.suspensePromises.size !== 0 || g.refetchingPromises.size !== 0
   putItem(null, LOADER_NORM_ID, loader)
 }
@@ -83,13 +82,9 @@ const putStoreItem = (store, normId, diff) => {
   const nextStoreItem = putItem(
     orm,
     normId,
-    store.isOrmStore
-      ? diff
-      : { id: normId, value: diff }
+    { id: normId, value: diff }
   )
-  return store.isOrmStore
-    ? nextStoreItem
-    : nextStoreItem.value
+  return nextStoreItem
 }
 
 const parsePutArgs = (store, storeOptions, args) => {
