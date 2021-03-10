@@ -13,7 +13,7 @@ simple way to write ux without loading awaiting
 
 ✨✨✨✨✨✨✨✨✨✨✨✨✨
 
-&nbsp; &nbsp; &nbsp; [demo is the best way to see](https://github.com/koevlu/react-norm/tree/master/demo)
+&nbsp; &nbsp; [demo is the best way to see](https://github.com/koevlu/react-norm/tree/master/demo)
 
 ✨✨✨✨✨✨✨✨✨✨✨✨✨
 

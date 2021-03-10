@@ -1,25 +1,25 @@
-import { store, useStore } from 'r-nrm'
+import { ormStore, useOrmStore } from 'r-nrm'
 import api from '../api'
 import { authorOrm } from '../stores/orm'
 
 export default params => loadAuthor(params.authorId)
 
-const authorStore = store(
+const authorOrmStore = ormStore(
   authorOrm
 )
 
 export const useAuthor = authorId => {
   authorId = Number(authorId)
-  if (!authorStore.wasLoaded(authorId)) loadAuthor(authorId)
+  if (!authorOrmStore.wasLoaded(authorId)) loadAuthor(authorId)
   return {
-    author: useStore(authorStore, authorId)
+    author: useOrmStore(authorOrmStore, authorId)
   }
 }
 
 const loadAuthor = authorId => {
   authorId = Number(authorId)
-  if (!authorStore.isLoading(authorId))
-    authorStore.put(
+  if (!authorOrmStore.isLoading(authorId))
+    authorOrmStore.put(
       authorId,
       api.author.get(authorId)
     )

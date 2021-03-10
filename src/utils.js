@@ -7,7 +7,7 @@ export const MONTH = MINUTE * 60 * 24 * 30;
 
 let normIdCount = 0
 export const normalizeId = (orm, idKey, id) => {
-  const normId = pathGet(g.ids, orm, idKey, id) || Symbol.for(`normId ${normIdCount++}`)
+  const normId = pathGet(g.ids, orm, idKey, id) || String(normIdCount++)
   pathSet(g.ids, orm, idKey, id)(normId)
 
   const item = g.items.get(normId)

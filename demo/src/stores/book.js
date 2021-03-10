@@ -1,11 +1,11 @@
-import { store, useStore } from 'r-nrm'
+import { ormStore, useOrmStore } from 'r-nrm'
 import api from '../api'
 import { bookOrm } from '../stores/orm'
 import { toggleFavoriteBook } from '../stores/favoriteBooks'
 
 export default params => loadBook(params.bookId)
 
-const bookStore = store(
+const bookStore = ormStore(
   bookOrm
 )
 
@@ -13,7 +13,7 @@ export const useBook = bookId => {
   bookId = Number(bookId)
   if (!bookStore.wasLoaded(bookId)) loadBook(bookId)
   return {
-    book: useStore(bookStore, bookId),
+    book: useOrmStore(bookStore, bookId),
 
     changeBook: diff =>
       changeBook(bookId, diff)

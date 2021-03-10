@@ -19,29 +19,34 @@ const DEFAULT_STORE_OPTIONS = {
 }
 
 let i = 0
-export const storeFactory = (desc, initState, userOptions) => {
+export const ormStoreFactory = (orm, userOptions) => {
   const storeOptions = { ...DEFAULT_STORE_OPTIONS, ...userOptions }
-  const storeId = Symbol.for(`store ${i++}`)
+  const storeId = Symbol.for(`ormStore ${i++}`)
+
   const store = {
     id: storeId,
     put: (...args) => {
       const { normId, diff, options } = parsePutArgs(store, storeOptions, args)
       return isPromise(diff)
-        ? putStorePromise(store, normId, diff, options)
-        : putStoreItem(store, normId, diff)
+          ? putStorePromise(store, normId, diff, options)
+          : putStoreItem(store, normId, diff)
     },
-    get: () => {
-      return g.suspensePromises.get(storeId) || item.value
+    get: (...args) => {
+      const normId = parseGetArgs(store, storeOptions, args)
+      const item = getItem(normId)
+      return g.suspensePromises.get(normId) || item
     },
-    isLoading: () => {
-      return g.suspensePromises.has(storeId) || g.refetchingPromises.has(storeId)
+    isLoading: (...args) => {
+      const normId = parseGetArgs(store, storeOptions, args)
+      return g.suspensePromises.has(normId) || g.refetchingPromises.has(normId)
     },
-    wasLoaded: () => {
-      return g.fetchedAt.has(storeId)
+    wasLoaded: (...args) => {
+      const normId = parseGetArgs(store, storeOptions, args)
+      return g.fetchedAt.has(normId)
     }
   }
-  g.ormsById.set(storeId, ormFactory({ value: desc }))
-  store.put(initState)
+
+  g.ormsById.set(storeId, orm)
 
   return store
 }
@@ -80,29 +85,23 @@ const actualizeLoading = () => {
 
 const putStoreItem = (store, normId, diff) => {
   const orm = g.ormsById.get(store.id)
-  const nextStoreItem = putItem(
-    orm,
-    normId,
-    store.isOrmStore
-      ? diff
-      : { id: normId, value: diff }
-  )
-  return store.isOrmStore
-    ? nextStoreItem
-    : nextStoreItem.value
+  const nextStoreItem = putItem(orm, normId, diff)
+  return nextStoreItem
 }
 
 const parsePutArgs = (store, storeOptions, args) => {
-  const id = store.id
-  const [diff, userOptions] = args
-  const storeOrm = g.ormsById.get(store.id)
-
+  const [id, diff, userOptions] = args
   const options = { ...storeOptions, ...userOptions }
-  const normId = store.id
+  const storeOrm = g.ormsById.get(store.id)
+  const normId = normalizeId(storeOrm, options.idKey, id)
 
-  return {
-    normId,
-    options,
-    diff
-  }
+  return { options, diff, normId }
+}
+
+const parseGetArgs = (store, storeOptions, args) => {
+  const [id, userOptions] = args
+  const storeOrm = g.ormsById.get(store.id)
+  const options = { ...storeOptions, ...userOptions }
+
+  return normalizeId(storeOrm, options.idKey, id)
 }
