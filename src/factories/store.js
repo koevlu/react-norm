@@ -18,7 +18,7 @@ const DEFAULT_STORE_OPTIONS = {
 let i = 0
 export const storeFactory = (desc, initState, userOptions) => {
   const storeOptions = { ...DEFAULT_STORE_OPTIONS, ...userOptions }
-  const storeId = Symbol.for(`store ${i++}`)
+  const storeId = `store ${i++}`
   const store = {
     id: storeId,
     put: (...args) => {

@@ -1,6 +1,8 @@
 import g from '../globals'
 import { putItem } from '../methods/put'
 import { getItem } from '../methods/get'
+import { replaceItem } from '../methods/replace'
+import { removeItem } from '../methods/remove'
 import {
   normalizeId,
   isPromise,
@@ -18,7 +20,7 @@ const DEFAULT_STORE_OPTIONS = {
 let i = 0
 export const ormStoreFactory = (orm, userOptions) => {
   const storeOptions = { ...DEFAULT_STORE_OPTIONS, ...userOptions }
-  const storeId = Symbol.for(`ormStore ${i++}`)
+  const storeId = `ormStore ${i++}`
 
   const store = {
     id: storeId,
@@ -32,6 +34,16 @@ export const ormStoreFactory = (orm, userOptions) => {
       const normId = parseGetArgs(store, storeOptions, args)
       const item = getItem(normId)
       return g.suspensePromises.get(normId) || item
+    },
+    replace: (id, newValue, userOptions) => {
+      const options = { idKey: 'id', ...userOptions }
+      const normId = normalizeId(orm, options.idKey, id)
+      return replaceItem(normId, newValue)
+    },
+    remove: (id, userOptions) => {
+      const options = { idKey: 'id', ...userOptions }
+      const normId = normalizeId(orm, options.idKey, id)
+      return removeItem(normId)
     },
     isLoading: (...args) => {
       const normId = parseGetArgs(store, storeOptions, args)
