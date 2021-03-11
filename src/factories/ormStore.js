@@ -6,7 +6,6 @@ import {
   isPromise,
   MONTH
 } from '../utils'
-import { ormFactory } from './orm'
 import { executeSubscription } from '../subscriptions'
 import { actualizeLoading } from '../loading'
 
@@ -79,6 +78,7 @@ const putStorePromise = (store, normId, promise, options) => {
 const putStoreItem = (store, normId, diff) => {
   const orm = g.ormsById.get(store.id)
   const nextStoreItem = putItem(orm, normId, diff)
+
   return nextStoreItem
 }
 

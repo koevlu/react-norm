@@ -2,7 +2,6 @@ import g from '../globals'
 import { putItem } from '../methods/put'
 import { getItem } from '../methods/get'
 import {
-  normalizeId,
   isPromise,
   MONTH
 } from '../utils'
@@ -29,7 +28,7 @@ export const storeFactory = (desc, initState, userOptions) => {
         : putStoreItem(store, normId, diff)
     },
     get: () => {
-      return g.suspensePromises.get(storeId) || item.value
+      return g.suspensePromises.get(storeId) || getItem(storeId).value
     },
     isLoading: () => {
       return g.suspensePromises.has(storeId) || g.refetchingPromises.has(storeId)
@@ -82,10 +81,7 @@ const putStoreItem = (store, normId, diff) => {
 }
 
 const parsePutArgs = (store, storeOptions, args) => {
-  const id = store.id
   const [diff, userOptions] = args
-  const storeOrm = g.ormsById.get(store.id)
-
   const options = { ...storeOptions, ...userOptions }
   const normId = store.id
 

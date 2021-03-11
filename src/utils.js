@@ -32,22 +32,22 @@ export const getIdKeyAndId = (orm, ...items) => {
   }
 }
 
-export const relationsIncrement = (childId, parentId) => {
-  if (!parentId) return
-  const shouldRefresh = g.updatedAt.get(childId) < g.currentUpdatedAt
+export const relationsIncrement = (childNormId, parentNormId) => {
+  if (!parentNormId) return
+  const shouldRefresh = g.updatedAt.get(childNormId) < g.currentUpdatedAt
   if (shouldRefresh) {
-    pathSet(g.childs, parentId, childId)(1)
-    pathSet(g.parents, childId, parentId)(1)
+    pathSet(g.childs, parentNormId, childNormId)(1)
+    pathSet(g.parents, childNormId, parentNormId)(1)
   } else {
-    pathIncrement(g.childs, parentId, childId)
-    pathIncrement(g.parents, childId, parentId)
+    pathIncrement(g.childs, parentNormId, childNormId)
+    pathIncrement(g.parents, childNormId, parentNormId)
   }
 }
 
-export const relationsDecrement = (childId, parentId) => {
-  if (!parentId) return
-  pathDecrement(g.parents, childId, parentId)
-  pathDecrement(g.childs, parentId, childId)
+export const relationsDecrement = (childNormId, parentNormId) => {
+  if (!parentNormId) return
+  pathDecrement(g.parents, childNormId, parentNormId)
+  pathDecrement(g.childs, parentNormId, childNormId)
 }
 
 export const deferRefreshes = updatedIds => {
