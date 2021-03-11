@@ -12,7 +12,6 @@ import { executeSubscription } from '../subscriptions'
 import { actualizeLoading } from '../loading'
 
 const DEFAULT_STORE_OPTIONS = {
-  idKey: 'id',
   lifetimeMs: MONTH,
   suspense: true
 }
@@ -27,30 +26,28 @@ export const ormStoreFactory = (orm, userOptions) => {
     put: (...args) => {
       const { normId, diff, options } = parsePutArgs(store, storeOptions, args)
       return isPromise(diff)
-          ? putStorePromise(store, normId, diff, options)
-          : putStoreItem(store, normId, diff)
+        ? putStorePromise(store, normId, diff, options)
+        : putStoreItem(store, normId, diff)
     },
-    get: (...args) => {
-      const normId = parseGetArgs(store, storeOptions, args)
+    get: id => {
+      const normId = normalizeId(orm, id)
       const item = getItem(normId)
       return g.suspensePromises.get(normId) || item
     },
-    replace: (id, newValue, userOptions) => {
-      const options = { idKey: 'id', ...userOptions }
-      const normId = normalizeId(orm, options.idKey, id)
-      return replaceItem(normId, newValue)
+    replace: (id, nextValue) => {
+      const normId = normalizeId(orm, id)
+      return replaceItem(normId, nextValue)
     },
-    remove: (id, userOptions) => {
-      const options = { idKey: 'id', ...userOptions }
-      const normId = normalizeId(orm, options.idKey, id)
+    remove: id => {
+      const normId = normalizeId(orm, id)
       return removeItem(normId)
     },
-    isLoading: (...args) => {
-      const normId = parseGetArgs(store, storeOptions, args)
+    isLoading: id => {
+      const normId = normalizeId(orm, id)
       return g.suspensePromises.has(normId) || g.refetchingPromises.has(normId)
     },
-    wasLoaded: (...args) => {
-      const normId = parseGetArgs(store, storeOptions, args)
+    wasLoaded: id => {
+      const normId = normalizeId(orm, id)
       return g.fetchedAt.has(normId)
     }
   }
@@ -98,15 +95,7 @@ const parsePutArgs = (store, storeOptions, args) => {
   const [id, diff, userOptions] = args
   const options = { ...storeOptions, ...userOptions }
   const storeOrm = g.ormsById.get(store.id)
-  const normId = normalizeId(storeOrm, options.idKey, id)
+  const normId = normalizeId(storeOrm, id)
 
   return { options, diff, normId }
-}
-
-const parseGetArgs = (store, storeOptions, args) => {
-  const [id, userOptions] = args
-  const storeOrm = g.ormsById.get(store.id)
-  const options = { ...storeOptions, ...userOptions }
-
-  return normalizeId(storeOrm, options.idKey, id)
 }

@@ -1,6 +1,7 @@
 import { store, useStore } from 'r-nrm'
 import api from '../api'
 import { bookOrm } from '../stores/orm'
+import { bookOrmStore } from '../stores/book'
 
 export default () => loadFavoriteBooks()
 
@@ -20,7 +21,7 @@ const loadFavoriteBooks = () =>
     )
 
 export const toggleFavoriteBook = bookId => {
-  const nextBook = bookOrm.put(
+  const nextBook = bookOrmStore.put(
     bookId,
     book => ({ favorite: !book.favorite })
   )

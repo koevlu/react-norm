@@ -6,30 +6,19 @@ export const MINUTE = 60 * 1000 / 12
 export const MONTH = MINUTE * 60 * 24 * 30;
 
 let normIdCount = 0
-export const normalizeId = (orm, idKey, id) => {
-  const normId = pathGet(g.ids, orm, idKey, id) || String(normIdCount++)
-  pathSet(g.ids, orm, idKey, id)(normId)
+export const normalizeId = (orm, id) => {
+  const normId = pathGet(g.ids, orm, id) || String(++normIdCount)
+  pathSet(g.ids, orm, id)(normId)
 
-  const item = g.items.get(normId)
-  if (!isPlainObject(item)) return normId
-
-  for (let key of g.ormKeys.get(orm))
-    if (item.hasOwnProperty(key))
-      pathSet(g.ids, orm, key, item[key])(normId)
   return normId
 }
 
-export const getIdKeyAndId = (orm, ...items) => {
-  for (let idKey of g.ormKeys.get(orm)) {
-    const itemWithId = items.find(obj =>
-      isPlainObject(obj) &&
-      obj.hasOwnProperty(idKey)
-    )
-    if (itemWithId) return {
-      idKey,
-      id: itemWithId[idKey]
-    }
-  }
+export const extractId = (...itemModes) => {
+  const itemWithId = itemModes.find(obj =>
+    isPlainObject(obj) &&
+    obj.hasOwnProperty('id')
+  )
+  if (itemWithId) return itemWithId.id
 }
 
 export const relationsIncrement = (childNormId, parentNormId) => {

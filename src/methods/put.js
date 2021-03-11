@@ -4,7 +4,7 @@ import g from '../globals'
 import { executeSubscriptions } from '../subscriptions'
 import {
   normalizeId,
-  getIdKeyAndId,
+  extractId,
   relationsIncrement,
   relationsDecrement,
   deferRefreshes,
@@ -78,8 +78,8 @@ const merge = (desc, level, diff, parentId, inst) => {
   if (!diff) return diff
 
   if (isOrm(desc)) {
-    const { idKey, id } = getIdKeyAndId(desc, diff, level)
-    const normId = normalizeId(desc, idKey, id)
+    const id = extractId(diff, level)
+    const normId = normalizeId(desc, id)
 
     return mergeItem(desc, normId, diff, parentId)
   }
@@ -113,8 +113,8 @@ const merge = (desc, level, diff, parentId, inst) => {
     const childOrm = desc[0]
     const nextChilds = new Map()
     diff.forEach((childDiff, i) => {
-      const { idKey, id } = getIdKeyAndId(childOrm, childDiff)
-      const childNormId = normalizeId(childOrm, idKey, id)
+      const id = extractId(childDiff)
+      const childNormId = normalizeId(childOrm, id)
       nextChilds.set(childNormId, true)
 
       stack.push(i)

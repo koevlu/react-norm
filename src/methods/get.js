@@ -1,7 +1,7 @@
 import g from '../globals'
 import {
   normalizeId,
-  getIdKeyAndId,
+  extractId,
   isOrm,
   isPlainObject
 } from '../utils'
@@ -25,8 +25,8 @@ export default getItem
 
 const refreshLevel = (desc, level, nextLevel) => {
   if (isOrm(desc)) {
-    const { idKey, id } = getIdKeyAndId(desc, level)
-    const normId = normalizeId(desc, idKey, id)
+    const id = extractId(level)
+    const normId = normalizeId(desc, id)
     const item = getItem(normId)
 
     return item

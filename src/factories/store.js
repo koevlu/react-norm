@@ -10,7 +10,6 @@ import { executeSubscription } from '../subscriptions'
 import { actualizeLoading } from '../loading'
 
 const DEFAULT_STORE_OPTIONS = {
-  idKey: 'id',
   lifetimeMs: MONTH,
   suspense: true
 }

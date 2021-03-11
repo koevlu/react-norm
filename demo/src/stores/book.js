@@ -5,15 +5,15 @@ import { toggleFavoriteBook } from '../stores/favoriteBooks'
 
 export default params => loadBook(params.bookId)
 
-const bookStore = ormStore(
+export const bookOrmStore = ormStore(
   bookOrm
 )
 
 export const useBook = bookId => {
   bookId = Number(bookId)
-  if (!bookStore.wasLoaded(bookId)) loadBook(bookId)
+  if (!bookOrmStore.wasLoaded(bookId)) loadBook(bookId)
   return {
-    book: useOrmStore(bookStore, bookId),
+    book: useOrmStore(bookOrmStore, bookId),
 
     changeBook: diff =>
       changeBook(bookId, diff)
@@ -27,8 +27,8 @@ export const useBook = bookId => {
 
 const loadBook = bookId => {
   bookId = Number(bookId)
-  if (!bookStore.isLoading(bookId))
-    bookStore.put(
+  if (!bookOrmStore.isLoading(bookId))
+    bookOrmStore.put(
       bookId,
       api.book.get(bookId)
     )
@@ -36,12 +36,12 @@ const loadBook = bookId => {
 
 const changeBook = (bookId, diff) => {
   bookId = Number(bookId)
-  bookStore.put(bookId, diff)
+  bookOrmStore.put(bookId, diff)
 
-  const book = bookStore.get(bookId)
+  const book = bookOrmStore.get(bookId)
   return api.book.put(bookId, diff)
     .catch(e => {
-      bookStore.put(bookId, book)
+      bookOrmStore.put(bookId, book)
       throw e
     })
 }

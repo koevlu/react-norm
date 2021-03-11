@@ -3,7 +3,7 @@ import g from '../globals'
 import { executeSubscriptions } from '../subscriptions'
 import {
   normalizeId,
-  getIdKeyAndId,
+  extractId,
   relationsDecrement,
   deferRefreshes,
   isOrm,
@@ -44,8 +44,8 @@ export const removeItem = normId => {
     }
     if (Array.isArray(parentDesc))
       nextParent = parent.filter(item => {
-        const { idKey, id } = getIdKeyAndId(parentDesc[0], item)
-        const childNormId = normalizeId(parentDesc[0], idKey, id)
+        const id = extractId(item)
+        const childNormId = normalizeId(parentDesc[0], id)
         if (childNormId === normId) {
           g.childs.get(parentNormId).delete(normId)
           return false
@@ -90,8 +90,8 @@ const mergeRemoving = (desc, level, normId, parentNormId) => {
     if (!isOrm(desc[0])) return level
     const nextChilds = new Map()
     const filteredItem = level.filter(child => {
-      const { idKey, id } = getIdKeyAndId(desc[0], child) 
-      const childNormId = normalizeId(desc[0], idKey, id)
+      const id = extractId(child) 
+      const childNormId = normalizeId(desc[0], id)
 
       nextChilds.set(childNormId, true)
       if (child !== getItem(normId)) return true

@@ -13,13 +13,9 @@ export const useStore = (store, options) => {
   return state.value
 }
 
-export const useOrmStore = (ormStore, id, userOptions) => {
-  const options = {
-    idKey: 'id',
-    ...userOptions
-  }
+export const useOrmStore = (ormStore, id, options) => {
   const orm = g.ormsById.get(ormStore.id)
-  const normId = normalizeId(orm, options.idKey, id)
+  const normId = normalizeId(orm, id)
   const [state, setState] = useState(getState(normId))
 
   useSubscription(normId, setState)
