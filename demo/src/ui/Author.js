@@ -11,9 +11,10 @@ const Author = () => {
   const [colors, setColors] = useState(author.booksPreview.map(
     () => randomColor()
   ))
-  const updateColor = i => setColors(
+  const rColor = i => setColors(
     colors.map((c, j) => j === i ? randomColor() : c)
   )
+
   return (
     <>
       <h1>
@@ -48,9 +49,9 @@ const Author = () => {
                 padding: 10,
                 borderRadius: 3,
               }}
-              onMouseOver={() => updateColor(i)}
-              onMouseMove={() => updateColor(i)}
-              onMouseOut={() => updateColor(i)}
+              onMouseOver={() => rColor(i)}
+              onMouseMove={() => rColor(i)}
+              onMouseOut={() => rColor(i)}
             >
               {book.name}
             </PreloadLink>

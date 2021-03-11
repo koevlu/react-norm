@@ -11,6 +11,7 @@ const Book = () => {
   const [description, setDescription] = useState(book.description)
   const [color, setColor] = useState(randomColor())
   const rColor = () => setColor(randomColor())
+
   return (
     <>
       <h1>
@@ -24,8 +25,8 @@ const Book = () => {
           textDecoration: 'none',
           color: color,
         }}
-        onMouseOver={() => rColor()}
-        onMouseOut={() => rColor()}
+        onMouseOver={rColor}
+        onMouseOut={rColor}
       >
         <h2>{book.author.name}</h2>
       </PreloadLink>
@@ -38,10 +39,16 @@ const Book = () => {
       />
       <br/>
       <br/>
-      description: <input
+      description:&nbsp;
+      <input
         value={description}
         onChange={e => setDescription(e.target.value)}
         onBlur={() => changeBook({ ...book, description })}
+        onKeyDown={e => {
+          if (e.keyCode !== 13) return
+          changeBook({ ...book, description })
+          e.target.blur()
+        }}
       />
       <br/>
       <br/>

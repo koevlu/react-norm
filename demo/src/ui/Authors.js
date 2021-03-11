@@ -12,6 +12,7 @@ const Authors = () => {
   const rColor = i => setColors(
     colors.map((c, j) => j === i ? randomColor() : c)
   )
+
   return (
     <>
       <h1>authors:</h1>

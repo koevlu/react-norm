@@ -11,6 +11,7 @@ const FavoriteBooks = () => {
   const rColor = i => setColors(
     colors.map((c, j) => j === i ? randomColor() : c)
   )
+
   return (
     <>
       <h1>favorite books:</h1>
