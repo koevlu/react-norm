@@ -17,11 +17,28 @@
   ],
   "author": "Kostya Luchankin",
   "license": "MIT",
+  "eslintConfig": {
+    "extends": "react-app",
+    "rules": {
+      "new-parens": "off",
+      "no-throw-literal": "off",
+      "import/no-anonymous-default-export": "off"
+    }
+  },
   "dependencies": {
-    "react": "0.0.0-experimental-4c8c98ab9"
+    "react": "0.0.0-experimental-4c8c98ab9",
+    "react-router-dom": "0.0.0-experimental-ffd8c7d0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.21.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.3.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "rollup": "^2.35.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-terser": "^7.0.2"
