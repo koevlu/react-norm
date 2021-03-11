@@ -8,8 +8,7 @@ import {
 } from '../utils'
 import { ormFactory } from './orm'
 import { executeSubscription } from '../subscriptions'
-
-export const LOADER_NORM_ID = 'loader'
+import { actualizeLoading } from '../loading'
 
 const DEFAULT_STORE_OPTIONS = {
   idKey: 'id',
@@ -70,11 +69,6 @@ const putStorePromise = (store, normId, promise, options) => {
   executeSubscription(normId)
   actualizeLoading()
   return result
-}
-
-export const actualizeLoading = () => {
-  const loader = g.suspensePromises.size !== 0 || g.refetchingPromises.size !== 0
-  putItem(null, LOADER_NORM_ID, loader)
 }
 
 const putStoreItem = (store, normId, diff) => {

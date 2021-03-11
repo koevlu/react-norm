@@ -3,16 +3,7 @@ import g from './globals'
 import { subscribe } from './subscriptions'
 import { getItem } from './methods/get'
 import { normalizeId, isPromise } from './utils'
-import { LOADER_NORM_ID } from './factories/store'
-
-export const useLoading = () => {
-  const [loading, setLoading] = useState(false)
-  useSubscription(
-    LOADER_NORM_ID,
-    nextLoading => nextLoading !== loading && setLoading(nextLoading)
-  )
-  return loading
-}
+import { LOADING_NORM_ID } from './loading'
 
 export const useStore = (store, options) => {
   const [state, setState] = useState(getState(store.id))
@@ -34,6 +25,15 @@ export const useOrmStore = (ormStore, id, userOptions) => {
   useSubscription(normId, setState)
   if (isPromise(state)) throw state
   return state
+}
+
+export const useLoading = () => {
+  const [loading, setLoading] = useState(false)
+  useSubscription(
+    LOADING_NORM_ID,
+    nextLoading => nextLoading !== loading && setLoading(nextLoading)
+  )
+  return loading
 }
 
 const useSubscription = (normId, setState) => {

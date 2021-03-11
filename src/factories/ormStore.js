@@ -7,8 +7,8 @@ import {
   MONTH
 } from '../utils'
 import { ormFactory } from './orm'
-import { actualizeLoading } from './store'
 import { executeSubscription } from '../subscriptions'
+import { actualizeLoading } from '../loading'
 
 const DEFAULT_STORE_OPTIONS = {
   idKey: 'id',

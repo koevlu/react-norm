@@ -12,7 +12,7 @@
 
 ## blowin' in the wind
 
-- store -> store + ormStore
+- middleware
 - orm.oneOf(inst => inst.hasOwnProperty('stork') ? ormX : ormY)
 - string normId, items in localstorage, progressive app
 - optimize <PreloadLink /> loading
