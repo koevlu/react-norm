@@ -21,13 +21,13 @@ export const ormStoreFactory = (orm, userOptions) => {
   const storeOptions = { ...DEFAULT_STORE_OPTIONS, ...userOptions }
   const storeId = `ormStore ${i++}`
 
-  const store = {
+  const ormStore = {
     id: storeId,
     put: (...args) => {
-      const { normId, diff, options } = parsePutArgs(store, storeOptions, args)
+      const { normId, diff, options } = parsePutArgs(ormStore, storeOptions, args)
       return isPromise(diff)
-        ? putStorePromise(store, normId, diff, options)
-        : putStoreItem(store, normId, diff)
+        ? putOrmStorePromise(ormStore, normId, diff, options)
+        : putOrmStoreItem(ormStore, normId, diff)
     },
     get: id => {
       const normId = normalizeId(orm, id)
@@ -54,10 +54,10 @@ export const ormStoreFactory = (orm, userOptions) => {
 
   g.ormsById.set(storeId, orm)
 
-  return store
+  return ormStore
 }
 
-const putStorePromise = (store, normId, promise, options) => {
+const putOrmStorePromise = (ormStore, normId, promise, options) => {
   const gPromises =
     options.suspense && !(g.fetchedAt.has(normId) || g.suspensePromises.has(normId)) && !g.preloading
       ? g.suspensePromises
@@ -69,7 +69,7 @@ const putStorePromise = (store, normId, promise, options) => {
       gPromises.delete(normId)
       g.fetchedAt.set(normId, Date.now())
       actualizeLoading()
-      return putStoreItem(store, normId, item)
+      return putOrmStoreItem(ormStore, normId, item)
     },
     error => {
       if (gPromises.get(normId) !== result) throw 'canceled'
@@ -84,17 +84,17 @@ const putStorePromise = (store, normId, promise, options) => {
   return result
 }
 
-const putStoreItem = (store, normId, diff) => {
-  const orm = g.ormsById.get(store.id)
+const putOrmStoreItem = (ormStore, normId, diff) => {
+  const orm = g.ormsById.get(ormStore.id)
   const nextStoreItem = putItem(orm, normId, diff)
 
   return nextStoreItem
 }
 
-const parsePutArgs = (store, storeOptions, args) => {
+const parsePutArgs = (ormStore, storeOptions, args) => {
   const [id, diff, userOptions] = args
   const options = { ...storeOptions, ...userOptions }
-  const storeOrm = g.ormsById.get(store.id)
+  const storeOrm = g.ormsById.get(ormStore.id)
   const normId = normalizeId(storeOrm, id)
 
   return { options, diff, normId }
