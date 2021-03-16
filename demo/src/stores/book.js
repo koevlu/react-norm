@@ -1,19 +1,18 @@
-import { ormStore, useOrmStore } from 'r-nrm'
+import { store, useStore } from '*'
 import api from '../api'
 import { bookOrm } from '../stores/orm'
 import { toggleFavoriteBook } from '../stores/favoriteBooks'
 
 export default params => loadBook(params.bookId)
 
-export const bookOrmStore = ormStore(
+export const bookOrmStore = store(
   bookOrm
 )
 
 export const useBook = bookId => {
   bookId = Number(bookId)
-  if (!bookOrmStore.wasLoaded(bookId)) loadBook(bookId)
   return {
-    book: useOrmStore(bookOrmStore, bookId),
+    book: useStore(bookOrmStore, bookId) || { author: {} },
 
     changeBook: diff =>
       changeBook(bookId, diff)
@@ -27,11 +26,11 @@ export const useBook = bookId => {
 
 const loadBook = bookId => {
   bookId = Number(bookId)
-  if (!bookOrmStore.isLoading(bookId))
-    bookOrmStore.put(
-      bookId,
-      api.book.get(bookId)
-    )
+  bookOrmStore.put(
+    bookId,
+    api.book.get(bookId)
+  )
+  .catch(() => {})
 }
 
 const changeBook = (bookId, diff) => {

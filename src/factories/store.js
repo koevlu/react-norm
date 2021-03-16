@@ -1,92 +1,39 @@
-import g from '../globals'
-import { putItem } from '../methods/put'
-import { getItem } from '../methods/get'
-import {
-  isPromise,
-  MONTH
-} from '../utils'
-import { ormFactory } from './orm'
-import { executeSubscription } from '../subscriptions'
-import { actualizeLoading } from '../loading'
+import g from '*/global'
+import put from '*/api/put'
+import putAsync from '*/api/putAsync'
+import get from '*/api/get'
+import replace from '*/api/replace'
+import remove from '*/api/remove'
+import { normalizeId, isPromise } from '*/utils'
 
-const DEFAULT_STORE_OPTIONS = {
-  lifetimeMs: MONTH,
-  suspense: true
-}
+const storeFactory = orm => {
+  const normId = normalizeId(orm, void 0)
 
-let i = 0
-export const storeFactory = (desc, initState, userOptions) => {
-  const storeOptions = { ...DEFAULT_STORE_OPTIONS, ...userOptions }
-  const storeId = `store ${i++}`
   const store = {
-    id: storeId,
-    put: (...args) => {
-      const { normId, diff, options } = parsePutArgs(store, storeOptions, args)
+    put: (id, diff) => {
+      const normId = normalizeId(orm, id)
       return isPromise(diff)
-        ? putStorePromise(store, normId, diff, options)
-        : putStoreItem(store, normId, diff)
+        ? putAsync(orm, normId, diff)
+        : put(orm, normId, diff)
     },
-    get: () => {
-      return g.suspensePromises.get(storeId) || getItem(storeId).value
+    get: id => {
+      const normId = normalizeId(orm, id)
+      return g.suspensePromises.get(normId) || get(normId)
     },
-    isLoading: () => {
-      return g.suspensePromises.has(storeId) || g.refetchingPromises.has(storeId)
+    replace: (id, nextValue) => {
+      const normId = normalizeId(orm, id)
+      return replace(normId, nextValue)
     },
-    wasLoaded: () => {
-      return g.fetchedAt.has(storeId)
-    }
+    remove: id => {
+      const normId = normalizeId(orm, id)
+      return remove(normId)
+    },
+    normId
   }
-  g.ormsById.set(storeId, ormFactory({ value: desc }))
-  store.put(initState)
+
+  g.ormsById.set(normId, orm)
 
   return store
 }
 
-const putStorePromise = (store, normId, promise, options) => {
-  const gPromises =
-    options.suspense && !(g.fetchedAt.has(normId) || g.suspensePromises.has(normId)) && !g.preloading
-      ? g.suspensePromises
-      : g.refetchingPromises
-
-  const result = promise.then(
-    item => {
-      if (gPromises.get(normId) !== result) throw 'canceled'
-      gPromises.delete(normId)
-      g.fetchedAt.set(normId, Date.now())
-      actualizeLoading()
-      return putStoreItem(store, normId, item)
-    },
-    error => {
-      if (gPromises.get(normId) !== result) throw 'canceled'
-      gPromises.delete(normId)
-      actualizeLoading()
-      throw error
-    }
-  )
-  gPromises.set(normId, result)
-  executeSubscription(normId)
-  actualizeLoading()
-  return result
-}
-
-const putStoreItem = (store, normId, diff) => {
-  const orm = g.ormsById.get(store.id)
-  const nextStoreItem = putItem(
-    orm,
-    normId,
-    { id: normId, value: diff }
-  )
-  return nextStoreItem
-}
-
-const parsePutArgs = (store, storeOptions, args) => {
-  const [diff, userOptions] = args
-  const options = { ...storeOptions, ...userOptions }
-  const normId = store.id
-
-  return {
-    normId,
-    options,
-    diff
-  }
-}
+export default storeFactory

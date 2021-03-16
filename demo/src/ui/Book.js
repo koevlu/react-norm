@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { PreloadLink } from 'r-nrm'
+import { PreloadLink } from '*'
 import { useBook } from '../stores/book'
 import { randomColor } from '../utils'
 
@@ -43,10 +43,9 @@ const Book = () => {
       <input
         value={description}
         onChange={e => setDescription(e.target.value)}
-        onBlur={() => changeBook({ ...book, description })}
+        onBlur={e => changeBook({ ...book, description })}
         onKeyDown={e => {
           if (e.keyCode !== 13) return
-          changeBook({ ...book, description })
           e.target.blur()
         }}
       />

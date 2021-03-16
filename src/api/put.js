@@ -1,38 +1,39 @@
-import getItem from './get'
-import { updateRemovedChildsRelations } from './remove'
-import g from '../globals'
-import { executeSubscriptions } from '../subscriptions'
+import g from '*/global'
 import {
   normalizeId,
   extractId,
   relationsIncrement,
   relationsDecrement,
+  relationsUpdateArrayRemovedChilds,
   deferRefreshes,
   applyLoops,
   isOrm,
   resolveDiff,
-  isPlainObject
-} from '../utils'
+  isPlainObject,
+  notify,
+  // cloneMap
+} from '*/utils'
+import get from '*/api/get'
 
 const stack = []
 let loops = new Map()
 let updatedIds = new Map()
 
-export const putItem = (orm, normId, diff) => {
+const put = (orm, normId, diff) => {
   g.currentUpdatedAt = Date.now()
-  diff = resolveDiff(diff, getItem(normId))
+  diff = resolveDiff(diff, get(normId))
   loops = new Map()
   updatedIds = new Map()
 
   const result = mergeItem(orm, normId, diff, null)
   applyLoops(updatedIds, loops)
   deferRefreshes(updatedIds)
-  executeSubscriptions(updatedIds)
+  notify(updatedIds)
   return result
 }
 
 const mergeItem = (orm, normId, diff, parentId) => {
-  const item = getItem(normId)
+  const item = get(normId)
   g.ormsById.set(normId, orm)
 
   if (updatedIds.get(normId)) {
@@ -121,10 +122,12 @@ const merge = (desc, level, diff, parentId, inst) => {
       result[i] = mergeItem(childOrm, childNormId, childDiff, parentId)
       stack.pop()
     })
-    updateRemovedChildsRelations(level, result, nextChilds, parentId)
+    relationsUpdateArrayRemovedChilds(level, result, nextChilds, parentId)
 
     return result
   }
 
   return diff
 }
+
+export default put

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { PreloadLink } from 'r-nrm'
+import { PreloadLink } from '*'
 import { useAuthors } from '../stores/authors'
 import Flag from './Flag'
 import { randomColor } from '../utils'

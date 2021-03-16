@@ -1,19 +1,19 @@
-import getItem from './get'
-import g from '../globals'
-import { executeSubscriptions } from '../subscriptions'
+import g from '*/global'
 import {
+  notify,
   normalizeId,
   extractId,
-  relationsDecrement,
+  relationsUpdateArrayRemovedChilds,
   deferRefreshes,
   isOrm,
-  isPlainObject
-} from '../utils'
+  isPlainObject,
+} from '*/utils'
+import getItem from '*/api/get'
 
 let wasRemovedItem = false
 let updatedIds = new Map()
 
-export const removeItem = normId => {
+const remove = normId => {
   g.currentUpdatedAt = Date.now()
   updatedIds = new Map()
   updatedIds.set(normId, true)
@@ -63,12 +63,10 @@ export const removeItem = normId => {
   g.updatedAt.delete(normId)
   g.refreshes.delete(normId)
   deferRefreshes(updatedIds)
-  executeSubscriptions(updatedIds)
+  notify(updatedIds)
 
   return item
 }
-
-export default removeItem
 
 const mergeRemoving = (desc, level, normId, parentNormId) => {
   if (!desc) return level
@@ -99,7 +97,7 @@ const mergeRemoving = (desc, level, normId, parentNormId) => {
       return false
     })
     if (wasRemovedItem) {
-      updateRemovedChildsRelations(
+      relationsUpdateArrayRemovedChilds(
         level,
         filteredItem,
         nextChilds,
@@ -111,18 +109,4 @@ const mergeRemoving = (desc, level, normId, parentNormId) => {
   return level
 }
 
-export const updateRemovedChildsRelations = (
-  prevArray,
-  nextArray,
-  nextChilds,
-  parentNormId
-) => {
-  const prevChilds = g.arrayChilds.get(prevArray)
-  g.arrayChilds.set(nextArray, nextChilds)
-  if (!prevChilds) return
-
-  for (let normId of prevChilds.keys()) {
-    if (nextChilds.has(normId)) continue
-    relationsDecrement(normId, parentNormId)
-  }
-}
+export default remove

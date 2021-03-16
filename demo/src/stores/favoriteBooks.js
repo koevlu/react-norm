@@ -1,24 +1,24 @@
-import { store, useStore } from 'r-nrm'
+import { stone, useStone } from '*'
 import api from '../api'
 import { bookOrm } from '../stores/orm'
 import { bookOrmStore } from '../stores/book'
 
 export default () => loadFavoriteBooks()
 
-const favoriteBooksStore = store(
+const favoriteBooksStore = stone(
   [bookOrm],
   []
 )
 
 export const useFavoriteBooks = () => ({
-  favoriteBooks: useStore(favoriteBooksStore)
+  favoriteBooks: useStone(favoriteBooksStore)
 })
 
 const loadFavoriteBooks = () =>
-  !favoriteBooksStore.isLoading() &&
-    favoriteBooksStore.put(
-      api.favoriteBooks.get()
-    )
+  favoriteBooksStore.put(
+    api.favoriteBooks.get()
+  )
+  .catch(() => {})
 
 export const toggleFavoriteBook = bookId => {
   const nextBook = bookOrmStore.put(

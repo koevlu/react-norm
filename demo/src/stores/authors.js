@@ -1,20 +1,20 @@
-import { store, useStore } from 'r-nrm'
+import { stone, useStone } from '*'
 import api from '../api'
 import { authorOrm } from '../stores/orm'
 
 export default () => loadAuthors()
 
-const authorsStore = store(
+const authorsStone = stone(
   [authorOrm],
   []
 )
 
 export const useAuthors = () => ({
-  authors: useStore(authorsStore)
+  authors: useStone(authorsStone)
 })
 
 const loadAuthors = () =>
-  !authorsStore.isLoading() &&
-    authorsStore.put(
-      api.authors.get()
-    )
+  authorsStone.put(
+    api.authors.get()
+  )
+  .catch(() => {})

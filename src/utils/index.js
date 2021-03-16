@@ -1,17 +1,16 @@
-import g from './globals'
-import { pathGet, pathSet, pathIncrement, pathDecrement } from './path'
+import g from '*/global'
 
-export const MINUTE = 60 * 1000 / 12
+export const isOrm = inst => g.descriptions.has(inst)
 
-export const MONTH = MINUTE * 60 * 24 * 30;
+export const isPlainObject = inst =>
+  inst && Object.getPrototypeOf(inst) === Object.getPrototypeOf({})
 
-let normIdCount = 0
-export const normalizeId = (orm, id) => {
-  const normId = pathGet(g.ids, orm, id) || String(++normIdCount)
-  pathSet(g.ids, orm, id)(normId)
+export const resolveDiff = (diff, level) =>
+  typeof diff === 'function' ? diff(level) : diff
 
-  return normId
-}
+export const isPromise = inst => inst && typeof inst.then === 'function'
+
+export const isFunction = inst => typeof inst === 'function'
 
 export const extractId = (...itemModes) => {
   const itemWithId = itemModes.find(obj =>
@@ -21,31 +20,13 @@ export const extractId = (...itemModes) => {
   if (itemWithId) return itemWithId.id
 }
 
-export const relationsIncrement = (childNormId, parentNormId) => {
-  if (!parentNormId) return
-  const shouldRefresh = g.updatedAt.get(childNormId) < g.currentUpdatedAt
-  if (shouldRefresh) {
-    pathSet(g.childs, parentNormId, childNormId)(1)
-    pathSet(g.parents, childNormId, parentNormId)(1)
-  } else {
-    pathIncrement(g.childs, parentNormId, childNormId)
-    pathIncrement(g.parents, childNormId, parentNormId)
-  }
-}
-
-export const relationsDecrement = (childNormId, parentNormId) => {
-  if (!parentNormId) return
-  pathDecrement(g.parents, childNormId, parentNormId)
-  pathDecrement(g.childs, parentNormId, childNormId)
-}
-
 export const deferRefreshes = updatedIds => {
   const currentRefreshes = new Map
   for (let id of updatedIds.keys())
     deferItemRefreshes(id, currentRefreshes)
 }
 
-export const deferItemRefreshes = (normId, currentRefreshes) => {
+const deferItemRefreshes = (normId, currentRefreshes) => {
   if (currentRefreshes.has(normId)) return
   g.refreshes.set(normId, true)
   currentRefreshes.set(normId, true)
@@ -79,18 +60,6 @@ export const applyLoops = (updatedIds, loops) => {
   }
 }
 
-export const isOrm = inst => g.descriptions.has(inst)
-
-export const isPlainObject = inst =>
-  inst && Object.getPrototypeOf(inst) === Object.getPrototypeOf({})
-
-export const resolveDiff = (diff, level) =>
-  typeof diff === 'function' ? diff(level) : diff
-
-export const isPromise = inst => inst && typeof inst.then === 'function'
-
-export const isFunction = inst => typeof inst === 'function'
-
 // dev utils
 export const cloneMap = map => {
   if (!map) return null
@@ -110,3 +79,8 @@ export const cloneMapIds = map => {
     r.push(g.items.get(id))
   return r
 }
+
+export * from './path'
+export * from './normalizeId'
+export * from './relations'
+export * from './notifier'

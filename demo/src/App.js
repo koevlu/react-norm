@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { useRoutes } from 'react-router'
-import { preload } from 'r-nrm'
+import { preload } from '*'
 
 import SplashScreen from './ui/SplashScreen'
 import Page from './ui/Page'
@@ -47,10 +47,13 @@ const routes = preload([
 
 const AppRouter = () => useRoutes(routes);
 
-export default () =>
-  <BrowserRouter timeoutMs={8000}>
-    <Suspense fallback={<SplashScreen />}>
-      <ProgressBar />
-      <AppRouter />
-    </Suspense>
-  </BrowserRouter>
+export default () => {
+  return (
+    <BrowserRouter timeoutMs={8000}>
+      <Suspense fallback={<SplashScreen />}>
+        <ProgressBar />
+        <AppRouter />
+      </Suspense>
+    </BrowserRouter>
+  )
+}

@@ -25,10 +25,6 @@
       "import/no-anonymous-default-export": "off"
     }
   },
-  "dependencies": {
-    "react": "0.0.0-experimental-4c8c98ab9",
-    "react-router-dom": "0.0.0-experimental-ffd8c7d0"
-  },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "babel-eslint": "^10.1.0",

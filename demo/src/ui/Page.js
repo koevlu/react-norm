@@ -1,5 +1,5 @@
 import React from 'react'
-import { PreloadLink } from 'r-nrm'
+import { PreloadLink } from '*'
 
 const Page = ({ children }) =>
   <>

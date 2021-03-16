@@ -5,7 +5,6 @@ export default {
   ormsById: new Map, // { normId: orm }
   parents: new Map, // { normId: [normId] }
   items: new Map, // { normId: item }
-  ids: new Map, // { orm: { id: normId } }
   childs: new Map, // { normId: [normId] }
   fetchedAt: new Map, // { normId: dateMs }
   refreshes: new Map, // { normId: true }

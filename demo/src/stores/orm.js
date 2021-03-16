@@ -1,4 +1,4 @@
-import { orm } from 'r-nrm'
+import { orm } from '*'
 
 // pass func for await const authorOrm execution
 export const bookOrm = orm(() => ({

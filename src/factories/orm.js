@@ -1,10 +1,11 @@
-import g from '../globals'
+import g from '*/global'
+import { normalizeId } from '*/utils'
 
-let num = 0
-export const ormFactory = desc => {
-  const orm = { num: num++ }
+const ormFactory = desc => {
+  const normId = normalizeId('orm', desc)
+  g.descriptions.set(normId, desc)
 
-  g.descriptions.set(orm, desc)
-
-  return orm
+  return normId
 }
+
+export default ormFactory

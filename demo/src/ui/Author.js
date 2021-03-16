@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { PreloadLink } from 'r-nrm'
+import { PreloadLink } from '*'
 import { useAuthor } from '../stores/author'
 import { randomColor } from '../utils'
 import Flag from './Flag'

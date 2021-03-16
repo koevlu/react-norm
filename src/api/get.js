@@ -1,12 +1,12 @@
-import g from '../globals'
+import g from '*/global'
 import {
   normalizeId,
   extractId,
   isOrm,
   isPlainObject
-} from '../utils'
+} from '*/utils'
 
-export const getItem = normId => {
+const get = normId => {
   const cachedItem = g.items.get(normId)
 
   if (!g.refreshes.has(normId)) return cachedItem
@@ -21,13 +21,11 @@ export const getItem = normId => {
   return refreshLevel(desc, cachedItem, nextItem)
 }
 
-export default getItem
-
 const refreshLevel = (desc, level, nextLevel) => {
   if (isOrm(desc)) {
     const id = extractId(level)
     const normId = normalizeId(desc, id)
-    const item = getItem(normId)
+    const item = get(normId)
 
     return item
   }
@@ -48,3 +46,5 @@ const refreshLevel = (desc, level, nextLevel) => {
   }
   return level
 }
+
+export default get
