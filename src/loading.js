@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { Link, matchPath } from 'react-router-dom'
 import g from '*/global'
-import put from '*/api/put'
+import putItem from '*/api/putItem'
 
 export const LOADING_NORM_ID = 'Ἀ'
 
 export const actualizeLoading = () => {
   const loader = g.suspensePromises.size !== 0 || g.refetchingPromises.size !== 0
-  queueMicrotask(() => put(null, LOADING_NORM_ID, loader))
+  queueMicrotask(() => putItem(null, LOADING_NORM_ID, loader))
 }
 
 export const PreloadLink = ({ ...props }) => {

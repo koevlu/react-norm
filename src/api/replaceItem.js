@@ -1,7 +1,7 @@
 import g from '*/global'
 import { notify, deferRefreshes } from '*/utils'
 
-const ormReplace = (normId, item) => {
+const replaceItem = (normId, item) => {
   g.items.set(normId, item)
   g.currentUpdatedAt = Date.now()
   g.updatedAt.set(normId, g.currentUpdatedAt)
@@ -12,4 +12,4 @@ const ormReplace = (normId, item) => {
   return item
 }
 
-export default ormReplace
+export default replaceItem

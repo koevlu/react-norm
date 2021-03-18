@@ -8,12 +8,12 @@ import {
   isOrm,
   isPlainObject,
 } from '*/utils'
-import getItem from '*/api/get'
+import getItem from '*/api/getItem'
 
 let wasRemovedItem = false
 let updatedIds = new Map()
 
-const remove = normId => {
+const removeItem = normId => {
   g.currentUpdatedAt = Date.now()
   updatedIds = new Map()
   updatedIds.set(normId, true)
@@ -109,4 +109,4 @@ const mergeRemoving = (desc, level, normId, parentNormId) => {
   return level
 }
 
-export default remove
+export default removeItem

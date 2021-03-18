@@ -13,15 +13,15 @@ import {
   notify,
   // cloneMap
 } from '*/utils'
-import get from '*/api/get'
+import getItem from '*/api/getItem'
 
 const stack = []
 let loops = new Map()
 let updatedIds = new Map()
 
-const put = (orm, normId, diff) => {
+const putItem = (orm, normId, diff) => {
   g.currentUpdatedAt = Date.now()
-  diff = resolveDiff(diff, get(normId))
+  diff = resolveDiff(diff, getItem(normId))
   loops = new Map()
   updatedIds = new Map()
 
@@ -33,7 +33,7 @@ const put = (orm, normId, diff) => {
 }
 
 const mergeItem = (orm, normId, diff, parentId) => {
-  const item = get(normId)
+  const item = getItem(normId)
   g.ormsById.set(normId, orm)
 
   if (updatedIds.get(normId)) {
@@ -130,4 +130,4 @@ const merge = (desc, level, diff, parentId, inst) => {
   return diff
 }
 
-export default put
+export default putItem

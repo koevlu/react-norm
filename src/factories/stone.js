@@ -1,8 +1,8 @@
 import ormFactory from '*/factories/orm'
 import g from '*/global'
-import put from '*/api/put'
-import putAsync from '*/api/putAsync'
-import get from '*/api/get'
+import putItem from '*/api/putItem'
+import putItemAsync from '*/api/putItemAsync'
+import getItem from '*/api/getItem'
 import { normalizeId, isPromise } from '*/utils'
 
 const stoneFactory = (desc, initState) => {
@@ -11,13 +11,12 @@ const stoneFactory = (desc, initState) => {
 
   const stone = {
     put: diff => {
-      const normId = normalizeId(orm, void 0)
       return isPromise(diff)
-        ? putAsync(orm, normId, diff)
-        : put(orm, normId, diff)
+        ? putItemAsync(orm, normId, diff)
+        : putItem(orm, normId, diff)
     },
     get: () => {
-      return g.suspensePromises.get(normId) || get(normId)
+      return g.suspensePromises.get(normId) || getItem(normId)
     },
     normId
   }

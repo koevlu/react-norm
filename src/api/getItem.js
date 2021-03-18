@@ -6,7 +6,7 @@ import {
   isPlainObject
 } from '*/utils'
 
-const get = normId => {
+const getItem = normId => {
   const cachedItem = g.items.get(normId)
 
   if (!g.refreshes.has(normId)) return cachedItem
@@ -25,7 +25,7 @@ const refreshLevel = (desc, level, nextLevel) => {
   if (isOrm(desc)) {
     const id = extractId(level)
     const normId = normalizeId(desc, id)
-    const item = get(normId)
+    const item = getItem(normId)
 
     return item
   }
@@ -47,4 +47,4 @@ const refreshLevel = (desc, level, nextLevel) => {
   return level
 }
 
-export default get
+export default getItem

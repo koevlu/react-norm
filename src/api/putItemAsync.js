@@ -1,9 +1,9 @@
 import g from '*/global'
 import { notifyOne } from '*/utils'
 import { actualizeLoading } from '*/loading'
-import put from '*/api/put'
+import putItem from '*/api/putItem'
 
-const putAsync = (orm, normId, promise) => {
+const putItemAsync = (orm, normId, promise) => {
   const gPromises =
     !(g.fetchedAt.has(normId) || g.suspensePromises.has(normId)) && !g.preloading
       ? g.suspensePromises
@@ -15,7 +15,7 @@ const putAsync = (orm, normId, promise) => {
       gPromises.delete(normId)
       g.fetchedAt.set(normId, Date.now())
       actualizeLoading()
-      return put(orm, normId, item)
+      return putItem(orm, normId, item)
     },
     error => {
       if (gPromises.get(normId) !== result) throw 'canceled'
@@ -30,4 +30,4 @@ const putAsync = (orm, normId, promise) => {
   return result
 }
 
-export default putAsync
+export default putItemAsync

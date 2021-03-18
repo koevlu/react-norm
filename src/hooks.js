@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import g from '*/global'
-import get from '*/api/get'
+import getItem from '*/api/getItem'
 import { normalizeId, isPromise, listen } from '*/utils'
 import { LOADING_NORM_ID } from '*/loading'
 
@@ -43,4 +43,4 @@ const useListener = (normId, setState) => {
   )
 }
 
-const getState = normId => g.suspensePromises.get(normId) || get(normId)
+const getState = normId => g.suspensePromises.get(normId) || getItem(normId)
