@@ -4,10 +4,9 @@ import { actualizeLoading } from '*/loading'
 import putItem from '*/api/putItem'
 
 const putItemAsync = (orm, normId, promise) => {
-  const gPromises =
-    !(g.fetchedAt.has(normId) || g.suspensePromises.has(normId)) && !g.preloading
-      ? g.suspensePromises
-      : g.refetchingPromises
+  const gPromises = !g.preloading && !g.fetchedAt.has(normId)
+    ? g.suspensePromises
+    : g.refetchingPromises
 
   const result = promise.then(
     item => {

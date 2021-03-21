@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "history": "^5.0.0",
+    "mongodb": "^3.6.5",
     "react": "0.0.0-experimental-4c8c98ab9",
     "react-dom": "0.0.0-experimental-4c8c98ab9",
     "react-router": "0.0.0-experimental-ffd8c7d0",
