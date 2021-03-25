@@ -27,6 +27,14 @@ const storeFactory = orm => {
     remove: id => {
       const normId = normalizeId(orm, id)
       return removeItem(normId)
+    },    
+    isLoading: id => {
+      const normId = normalizeId(orm, id)
+      return g.suspensePromises.has(normId) || g.refetchingPromises.has(normId)
+    },
+    wasLoaded: id => {
+      const normId = normalizeId(id)
+      return g.fetchedAt.has(normId)
     },
     normId
   }

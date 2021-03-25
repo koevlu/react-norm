@@ -1,12 +1,9 @@
 import React from 'react'
-import fr from '../img/fr.svg'
-import prus from '../img/prus.svg'
-import rus from '../img/rus.png'
 
 const FLAGS = {
-  'Prussia': prus,
-  'France': fr,
-  'Russia': rus
+  'Prussia': 'http://localhost:7337/img/prus.svg',
+  'France': 'http://localhost:7337/img/fr.svg',
+  'Russia': 'http://localhost:7337/img/rus.png'
 }
 
 const Flag = ({ country }) =>

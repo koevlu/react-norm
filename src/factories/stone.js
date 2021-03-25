@@ -18,6 +18,12 @@ const stoneFactory = (desc, initState) => {
     get: () => {
       return g.suspensePromises.get(normId) || getItem(normId)
     },
+    isLoading: () => {
+      return g.suspensePromises.has(normId) || g.refetchingPromises.has(normId)
+    },
+    wasLoaded: () => {
+      return g.fetchedAt.has(normId)
+    },
     normId
   }
 

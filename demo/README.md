@@ -14,8 +14,8 @@
 
 - middleware
 - orm.oneOf(inst => inst.hasOwnProperty('stork') ? ormX : ormY)
-- string normId, items in localstorage, progressive app
+- items in localstorage, progressive app
 - optimize <PreloadLink /> loading
 - live socket connection to instances instead endless rest
 - TimeTraveling inside code (cancel actions simplify, unpredictable lists trouble)
-- necromantic spell for turning unit abstract code to both hooks and server-side db instances changes
+- necromantic spell for turning abstract code to both hooks and server-side db instances changes

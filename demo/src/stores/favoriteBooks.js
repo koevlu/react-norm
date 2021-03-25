@@ -3,19 +3,22 @@ import api from '../api'
 import { bookOrm } from '../stores/orm'
 import { bookOrmStore } from '../stores/book'
 
-export default () => loadFavoriteBooks()
+export default () => {
+  if (favoriteBooksStone.isLoading() || favoriteBooksStone.wasLoaded()) return
+  loadFavoriteBooks()
+}
 
-const favoriteBooksStore = stone(
+const favoriteBooksStone = stone(
   [bookOrm],
   []
 )
 
 export const useFavoriteBooks = () => ({
-  favoriteBooks: useStone(favoriteBooksStore)
+  favoriteBooks: useStone(favoriteBooksStone)
 })
 
 const loadFavoriteBooks = () =>
-  favoriteBooksStore.put(
+  favoriteBooksStone.put(
     api.favoriteBooks.get()
   )
   .catch(() => {})
@@ -37,12 +40,12 @@ export const toggleFavoriteBook = bookId => {
 }
 
 const addToFavorite = book =>
-  favoriteBooksStore.put(favoriteBooks =>
+  favoriteBooksStone.put(favoriteBooks =>
     [book, ...favoriteBooks]
   )
 
 const removeFromFavorite = book =>
-  favoriteBooksStore.put(favoriteBooks =>
+  favoriteBooksStone.put(favoriteBooks =>
     favoriteBooks.filter(fb =>
       book.id !== fb.id
     )

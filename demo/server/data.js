@@ -1,16 +1,4 @@
-import nietzsche from './img/nietzsche.jpg'
-import dostoevsky from './img/dostoevsky.jpg'
-import sartre from './img/sartre.jpg'
-import birth from './img/birth.png'
-import crime from './img/crime.svg'
-import demons from './img/demons.jpg'
-import evolution from './img/evolution.png'
-import gs from './img/gay-science.jpg'
-import humiliated from './img/humiliated.jpg'
-import nausea from './img/nausea.png'
-import vibes from './img/vibes.png'
-
-export const FAVORITE_BOOKS = [
+const FAVORITE_BOOKS = [
 {
   id: 1,
   name: 'The Birth of Tragedy from the Spirit of Music',
@@ -83,11 +71,11 @@ export const FAVORITE_BOOKS = [
 }
 ]
 
-export const AUTHORS = {
+const AUTHORS = {
   1: {
     id: 1,
     name: 'Friedrich Nietzsche',
-    img: nietzsche,
+    img: 'http://localhost:7337/img/nietzsche.jpg',
     booksPreview: [
       { 
         id: 1,
@@ -112,7 +100,7 @@ export const AUTHORS = {
   2: {
     id: 2,
     name: 'Fyodor Dostoevsky',
-    img: dostoevsky,
+    img: 'http://localhost:7337/img/dostoevsky.jpg',
     booksPreview: [
       {
         id: 5,
@@ -135,7 +123,7 @@ export const AUTHORS = {
   3: {
     id: 3,
     name: 'Sartre',
-    img: sartre,
+    img: 'http://localhost:7337/img/sartre.jpg',
     booksPreview: [
       {
         id: 8,
@@ -147,13 +135,13 @@ export const AUTHORS = {
   }
 }
 
-export const BOOKS = {
+const BOOKS = {
   1: {
     id: 1,
     name: 'The Birth of Tragedy from the Spirit of Music',
     favorite: true,
     description: 'its so good',
-    img: birth,
+    img: 'http://localhost:7337/img/birth.png',
     author: {
       id: 1,
       name: 'Friedrich Nietzsche'
@@ -164,7 +152,7 @@ export const BOOKS = {
     name: 'Human, All Too Human',
     favorite: true,
     description: 'its so good',
-    img: evolution,
+    img: 'http://localhost:7337/img/evolution.png',
     author: {
       id: 1,
       name: 'Friedrich Nietzsche'
@@ -175,7 +163,7 @@ export const BOOKS = {
     name: 'The Gay Science',
     favorite: true,
     description: 'its so good',
-    img: gs,
+    img: 'http://localhost:7337/img/gay-science.jpg',
     author: {
       id: 1,
       name: 'Friedrich Nietzsche'
@@ -186,7 +174,7 @@ export const BOOKS = {
     name: 'Thus Spoke Zarathustra',
     favorite: true,
     description: 'its so good',
-    img: vibes,
+    img: 'http://localhost:7337/img/vibes.png',
     author: {
       id: 1,
       name: 'Friedrich Nietzsche'
@@ -197,7 +185,7 @@ export const BOOKS = {
     name: 'Demons',
     favorite: true,
     description: 'its so good',
-    img: demons,
+    img: 'http://localhost:7337/img/demons.jpg',
     author: {
       id: 2,
       name: 'Fyodor Dostoevsky'
@@ -208,7 +196,7 @@ export const BOOKS = {
     name: 'Crime and Punishment',
     favorite: true,
     description: 'its so good',
-    img: crime,
+    img: 'http://localhost:7337/img/crime.svg',
     author: {
       id: 2,
       name: 'Fyodor Dostoevsky'
@@ -219,7 +207,7 @@ export const BOOKS = {
     name: 'Humiliated and Insulted',
     favorite: true,
     description: 'its so good',
-    img: humiliated,
+    img: 'http://localhost:7337/img/humiliated.jpg',
     author: {
       id: 2,
       name: 'Fyodor Dostoevsky'
@@ -230,10 +218,16 @@ export const BOOKS = {
     name: 'Nausea',
     favorite: false,
     description: 'some of these days',
-    img: nausea,
+    img: 'http://localhost:7337/img/nausea.png',
     author: {
       id: 3,
       name: 'Sartre'
     }
   },
+}
+
+module.exports = {
+  FAVORITE_BOOKS,
+  AUTHORS,
+  BOOKS
 }

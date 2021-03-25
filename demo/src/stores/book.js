@@ -3,7 +3,11 @@ import api from '../api'
 import { bookOrm } from '../stores/orm'
 import { toggleFavoriteBook } from '../stores/favoriteBooks'
 
-export default params => loadBook(params.bookId)
+export default params => {
+  const bookId = Number(params.bookId)
+  if (bookOrmStore.isLoading(bookId) || bookOrmStore.wasLoaded(bookId)) return
+  loadBook(params.bookId)
+}
 
 export const bookOrmStore = store(
   bookOrm

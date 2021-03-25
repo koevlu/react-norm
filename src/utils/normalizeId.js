@@ -5,7 +5,7 @@ const normIds = new Map // { category: { id: normId } }
 /*
  orm
  store
- unique
+ stone
  loader
  item
  any element of system has normId for fast access 

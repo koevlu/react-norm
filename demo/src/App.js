@@ -45,7 +45,7 @@ const routes = preload([
   }
 ])
 
-const AppRouter = () => useRoutes(routes);
+const AppRouter = () => useRoutes(routes)
 
 export default () => {
   return (
